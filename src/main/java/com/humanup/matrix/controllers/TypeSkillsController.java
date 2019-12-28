@@ -3,6 +3,7 @@ package com.humanup.matrix.controllers;
 import com.humanup.matrix.bs.ProfileBS;
 import com.humanup.matrix.bs.TypeSkillsBS;
 import com.humanup.matrix.vo.TypeSkillsVO;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +18,9 @@ public class TypeSkillsController {
     private TypeSkillsBS typeSkillsBS;
 
 
-
-    @RequestMapping(value="/typeskills", method= RequestMethod.POST)
+    @Operation(summary = "Create Type Skills", description = " Create new type skills by title ...", tags = { "skills" })
+    @RequestMapping(value="/typeskills", method= RequestMethod.POST,consumes={ "application/json"})
     @ResponseBody
-
     public ResponseEntity createTypeSkills(@RequestBody TypeSkillsVO typeSkills){
         Optional<Object> findTypeSkills = Optional.ofNullable(typeSkillsBS.findByTypeSkillsTitle(typeSkills.getTitleSkill()));
 
@@ -28,14 +28,15 @@ public class TypeSkillsController {
             return ResponseEntity.status(HttpStatus.FOUND).body("This type is Founded");
         }
         typeSkillsBS.createTypeSkills(typeSkills);
-        return ResponseEntity.status(HttpStatus.OK).body(typeSkillsBS);
+        return ResponseEntity.status(HttpStatus.CREATED).body(typeSkillsBS);
     }
 
+    @Operation(summary = "Find types kills by title", description = "Type Skills search by %title% format", tags = { "typeskills" })
     @RequestMapping(value="/typeskills", method=RequestMethod.GET)
     @ResponseBody
     public ResponseEntity getTypeInfo(@RequestParam(value="title", defaultValue="Spring Boot") String title){
         Optional<List<TypeSkillsVO>> findType = Optional.ofNullable(typeSkillsBS.findListTypeSkillsByTitle(title));
-        if(findType.isEmpty()){
+        if(findType.get().isEmpty()){
             Optional<TypeSkillsVO> findTypeSkillsTitle = Optional.ofNullable(typeSkillsBS.findByTypeSkillsTitle(title));
             if(findTypeSkillsTitle.isEmpty())
             {
@@ -46,6 +47,7 @@ public class TypeSkillsController {
         return ResponseEntity.status(HttpStatus.OK).body(findType.get());
     }
 
+    @Operation(summary = "Find all type skills", description = "Find all  type skill", tags = { "typeskills" })
     @RequestMapping(value="/typeskills/all", method=RequestMethod.GET)
     @ResponseBody
     public ResponseEntity getAlltypeInfo(){

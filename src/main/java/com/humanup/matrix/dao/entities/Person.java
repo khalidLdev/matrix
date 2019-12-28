@@ -7,7 +7,8 @@ import java.util.Date;
 public class Person{
 
   @Id
-  @GeneratedValue(strategy= GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", updatable = false, nullable = false)
   private Long id;
   private String firstName;
   private String lastName;
@@ -61,7 +62,7 @@ public class Person{
 
 
   public static class Builder{
-
+          private Long id;
           private String firstName;
           private String lastName;
           private String mailAdresses;
@@ -71,6 +72,10 @@ public class Person{
            public Builder() {
            }
 
+      public Builder setId(Long id) {
+          this.id = id;
+          return this;
+      }
            public Builder setFirstName(String firstName) {
              this.firstName = firstName;
              return this;

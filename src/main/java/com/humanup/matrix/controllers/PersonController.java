@@ -1,6 +1,7 @@
 package com.humanup.matrix.controllers;
 
 import com.humanup.matrix.bs.PersonBS;
+import com.humanup.matrix.exceptions.ProfileException;
 import com.humanup.matrix.vo.PersonVO;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +23,14 @@ public class PersonController {
   @Operation(summary = "Create Person", description = " Create new person by firstname, lastname ...", tags = { "person" })
   @RequestMapping(value="/person", method=RequestMethod.POST,consumes={ "application/json"})
   @ResponseBody
-  public ResponseEntity createPerson(@RequestBody PersonVO person){
+  public ResponseEntity createPerson(@RequestBody PersonVO person) throws ProfileException {
     Optional<Object> findPerson = Optional.ofNullable(personBS.findPersonByMailAdresses(person.getMailAdresses()));
 
     if(findPerson.isPresent()){
       return ResponseEntity.status(HttpStatus.FOUND).body("This User is Founded");
     }
     personBS.createPerson(person);
-    return ResponseEntity.status(HttpStatus.OK).body(person);
+    return ResponseEntity.status(HttpStatus.CREATED).body(person);
   }
 
   @Operation(summary = "Find person by email", description = "Person search by %email% format", tags = { "person" })
@@ -60,7 +61,7 @@ public class PersonController {
   @ResponseBody
   public ResponseEntity getProfilePersons(@RequestParam(value="title", defaultValue="Spring Developer") String profileTitle){
     Optional<List<PersonVO>> findProfile = Optional.ofNullable(personBS.findListProfilesByProfileTitle(profileTitle));
-    if(findProfile.isEmpty()){
+    if(findProfile.get().isEmpty()){
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This Title not Found");
     }
     return ResponseEntity.status(HttpStatus.OK).body(findProfile.get());

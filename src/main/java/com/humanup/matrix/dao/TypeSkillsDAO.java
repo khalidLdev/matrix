@@ -12,7 +12,7 @@ public interface TypeSkillsDAO extends CrudRepository<TypeSkills, Long> {
 	TypeSkills findByTitleSkill(String titleSkill);
     List<TypeSkills> findAll();
     TypeSkills findByTypeId(long typeId);
-    @Query("SELECT t FROM TypeSkills t WHERE t.titleSkill = '%:titleSkill%' ")
+    @Query("SELECT t FROM TypeSkills t WHERE lower(t.titleSkill) like %:titleSkill% ")
     List<TypeSkills> findTypeSkillsByTitle(String titleSkill);
     
 }

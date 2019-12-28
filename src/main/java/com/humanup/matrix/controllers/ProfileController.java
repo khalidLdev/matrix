@@ -27,7 +27,7 @@ public class ProfileController {
             return ResponseEntity.status(HttpStatus.FOUND).body("This Profile is Founded");
         }
         profileBS.createProfile(profile);
-        return ResponseEntity.status(HttpStatus.OK).body(profile);
+        return ResponseEntity.status(HttpStatus.CREATED).body(profile);
     }
 
     @Operation(summary = "Find profile by title", description = "Profile search by %profileTitle% format", tags = { "profile" })
@@ -37,7 +37,7 @@ public class ProfileController {
         Optional<ProfileVO> findProfile = Optional.ofNullable(profileBS.findProfileByTitle(profileTitle));
         if(findProfile.isEmpty()){
             Optional<List<ProfileVO>> findListProfilesByTitle = Optional.ofNullable(profileBS.findListProfilesByTitle(profileTitle));
-            if(findListProfilesByTitle.isEmpty())
+            if(findListProfilesByTitle.get().isEmpty())
             {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This Title not Found");
             }

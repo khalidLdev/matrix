@@ -12,18 +12,21 @@ import com.humanup.matrix.vo.TypeSkillsVO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 public class TypeSkillsBSImpl implements TypeSkillsBS {
 
 	@Autowired
 	private TypeSkillsDAO typeSkillsDAO;
 
 	@Override
+	@Transactional
 	public boolean createTypeSkills(TypeSkillsVO typeSkillsVO) {
 		TypeSkills typeToSave = new TypeSkills.Builder()
 				.setTitleSkill(typeSkillsVO.getTitleSkill())

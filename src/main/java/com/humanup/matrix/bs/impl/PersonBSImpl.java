@@ -5,15 +5,20 @@ import com.humanup.matrix.dao.PersonDAO;
 import com.humanup.matrix.dao.ProfileDAO;
 import com.humanup.matrix.dao.entities.Person;
 import com.humanup.matrix.dao.entities.Profile;
+import com.humanup.matrix.exceptions.ProfileException;
 import com.humanup.matrix.vo.PersonVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 public class PersonBSImpl implements PersonBS {
 
   @Autowired
@@ -23,13 +28,18 @@ public class PersonBSImpl implements PersonBS {
   private ProfileDAO profileDAO;
 
   @Override
-  public boolean createPerson(PersonVO personVO) {
+  @Transactional(rollbackFor = ProfileException.class)
+  public boolean createPerson(PersonVO personVO) throws ProfileException {
     Profile profile = profileDAO.findByProfileTitle(personVO.getProfile());
+    String email =  personVO.getMailAdresses();
 
+    if(null == profile || null == email || StringUtils.isEmpty(email)){
+      throw new ProfileException();
+    }
     Person personToSave =new Person.Builder()
           .setFirstName(personVO.getFirstName())
           .setLastName(personVO.getLastName())
-          .setMailAdresses(personVO.getMailAdresses())
+          .setMailAdresses(email)
           .setBirthDate(personVO.getBirthDate())
            .setProfile(profile)
           .build();
