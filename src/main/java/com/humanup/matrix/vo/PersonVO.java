@@ -1,6 +1,11 @@
 package com.humanup.matrix.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
+import java.util.List;
 
 public class PersonVO {
     private String firstName;
@@ -8,16 +13,18 @@ public class PersonVO {
     private String mailAdresses;
     private Date birthDate;
     private String profile;
+    private List<SkillVO> skillVOList;
 
     public PersonVO() {
     }
 
-    public PersonVO(String firstName, String lastName, String mailAdresses, Date birthDate, String profile) {
+    public PersonVO(String firstName, String lastName, String mailAdresses, Date birthDate, String profile, List<SkillVO> skillVOList) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.mailAdresses = mailAdresses;
         this.birthDate = birthDate;
         this.profile = profile;
+        this.skillVOList = skillVOList;
     }
 
     public String getFirstName() {
@@ -40,12 +47,18 @@ public class PersonVO {
         return profile;
     }
 
+
+    public List<SkillVO> getSkillVOList() {
+        return skillVOList;
+    }
+
     public static class Builder {
         private String firstName;
         private String lastName;
         private String mailAdresses;
         private Date birthDate;
         private String profile;
+        private List<SkillVO> skillVOList;
 
         public Builder() {
         }
@@ -75,8 +88,13 @@ public class PersonVO {
             return this;
         }
 
+        public Builder setSkills(List<SkillVO> skillVOList) {
+            this.skillVOList = skillVOList;
+            return this;
+        }
+
         public PersonVO build() {
-            return new PersonVO(firstName, lastName, mailAdresses, birthDate, profile);
+            return new PersonVO(firstName, lastName, mailAdresses, birthDate, profile,skillVOList);
         }
     }
 }

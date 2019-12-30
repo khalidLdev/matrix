@@ -12,6 +12,8 @@ public class TypeSkills {
 	private Long typeId;
 	private String titleSkill;
 
+	@OneToMany(mappedBy="typeSkills",fetch=FetchType.LAZY)
+	private List<Skill> skillList;
 
 	protected TypeSkills() {
 	}
@@ -31,6 +33,10 @@ public class TypeSkills {
 
 	public String getTitleSkill() {
 		return titleSkill;
+	}
+
+	public List<Skill> getSkillList() {
+		return skillList;
 	}
 
 

@@ -2,6 +2,8 @@ package com.humanup.matrix.dao.entities;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Person{
@@ -19,14 +21,27 @@ public class Person{
   @JoinColumn(name = "profileId")
   private Profile profile;
 
-  protected Person() {}
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(name = "person_skill",
+            joinColumns = { @JoinColumn(name = "person_id") },
+            inverseJoinColumns = { @JoinColumn(name = "skill_id") })
+    private Set<Skill> skills = new HashSet<>();
 
-  public Person(String firstName, String lastName, String mailAdresses,Date birthDate, Profile profile) {
+
+    public Person() {
+    }
+
+    public Person(String firstName, String lastName, String mailAdresses, Date birthDate, Profile profile, Set<Skill> skills) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.mailAdresses = mailAdresses;
     this.birthDate = birthDate;
     this.profile = profile;
+    this.skills = skills;
   }
 
   @Override
@@ -60,14 +75,22 @@ public class Person{
         return this.profile;
     }
 
+    public Set<Skill> getSkills() {
+        return skills;
+    }
 
-  public static class Builder{
+    public void setSkills(Set<Skill> skills) {
+        this.skills = skills;
+    }
+
+    public static class Builder{
           private Long id;
           private String firstName;
           private String lastName;
           private String mailAdresses;
           private Date birthDate;
           private Profile profile;
+          private Set<Skill> skills;
 
            public Builder() {
            }
@@ -100,8 +123,12 @@ public class Person{
             this.profile = profile;
             return this;
             }
+        public Builder setSkills(Set<Skill> skills) {
+            this.skills = skills;
+            return this;
+        }
            public Person build(){
-             return new Person( firstName,  lastName,  mailAdresses, birthDate,profile);
+             return new Person( firstName,  lastName,  mailAdresses, birthDate,profile,skills);
            }
          }
 }
