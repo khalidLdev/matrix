@@ -2,6 +2,7 @@ package com.humanup.matrix.vo;
 
 public class SkillVO {
 
+	private Long idTypeSkills;
 	private String libelle;
 	private String description;
 	private String typeSkills;
@@ -9,12 +10,16 @@ public class SkillVO {
 	protected SkillVO() {
 	}
 
-	public SkillVO(String libelle, String description, String typeSkills) {
+	public SkillVO(Long idTypeSkills,String libelle, String description, String typeSkills) {
+		this.idTypeSkills = idTypeSkills;
 		this.libelle = libelle;
 		this.description = description;
 		this.typeSkills = typeSkills;
 	}
 
+	public Long getIdTypeSkills() {
+		return idTypeSkills;
+	}
 
 	public String getLibelle() {
 		return libelle;
@@ -29,7 +34,7 @@ public class SkillVO {
 	}
 
 	public static class Builder {
-
+		private Long idTypeSkills;
 		private String libelle;
 		private String description;
 		private String typeSkills;
@@ -51,9 +56,12 @@ public class SkillVO {
 			this.typeSkills = typeSkills;
 			return this;
 		}
-
+		public Builder setIdTypeSkills(Long idTypeSkills) {
+			this.idTypeSkills = idTypeSkills;
+			return this;
+		}
 		public SkillVO build() {
-			return new SkillVO(libelle, description,typeSkills);
+			return new SkillVO(idTypeSkills,libelle, description,typeSkills);
 		}
 
 	}

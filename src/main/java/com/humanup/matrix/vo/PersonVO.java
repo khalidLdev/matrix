@@ -13,6 +13,7 @@ public class PersonVO {
     private String mailAdresses;
     private Date birthDate;
     private String profile;
+    @JsonIgnore
     private List<SkillVO> skillVOList;
 
     public PersonVO() {
@@ -48,6 +49,7 @@ public class PersonVO {
     }
 
 
+    @JsonProperty
     public List<SkillVO> getSkillVOList() {
         return skillVOList;
     }

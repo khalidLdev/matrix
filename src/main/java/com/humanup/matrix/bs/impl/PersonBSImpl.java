@@ -86,6 +86,7 @@ public class PersonBSImpl implements PersonBS {
               .setSkills(personFinded.get().getSkills().stream()
               .map(skill -> new SkillVO.Builder()
               .setLibelle(skill.getLibelle())
+                      .setTypeSkills(skill.getTypeSkills().getTitleSkill())
               .setDescription(skill.getDescription()).build())
               .collect(Collectors.toList()))
               .build();
@@ -106,6 +107,7 @@ public class PersonBSImpl implements PersonBS {
                 .setSkills(personFinded.getSkills().stream()
                         .filter(skill -> skill!=null).map(skill -> new SkillVO.Builder()
                                 .setLibelle(skill.getLibelle())
+                                .setTypeSkills(skill.getTypeSkills().getTitleSkill())
                                 .setDescription(skill.getDescription()).build())
                         .collect(Collectors.toList()))
             .build())
@@ -125,6 +127,7 @@ public class PersonBSImpl implements PersonBS {
                     .setSkills(personFinded.getSkills().stream()
                             .map(skill -> new SkillVO.Builder()
                                     .setLibelle(skill.getLibelle())
+                                    .setTypeSkills(skill.getTypeSkills().getTitleSkill())
                                     .setDescription(skill.getDescription()).build())
                             .collect(Collectors.toList()))
                     .build())

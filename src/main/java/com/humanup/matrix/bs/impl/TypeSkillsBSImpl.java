@@ -45,6 +45,15 @@ public class TypeSkillsBSImpl implements TypeSkillsBS {
 	}
 
 	@Override
+	public TypeSkillsVO findByTypeSkillsByID(Long id) {
+		Optional<TypeSkills> typeSkillsFinded = Optional.ofNullable(typeSkillsDAO.findByTypeId(id));
+		if (typeSkillsFinded.isPresent()) {
+			return new TypeSkillsVO.Builder().setTitleSkill(typeSkillsFinded.get().getTitleSkill()).build();
+		}
+		return null;
+	}
+
+	@Override
 	public List<TypeSkillsVO> findListTypeSkills() {
 		return typeSkillsDAO.findAll().stream()
 				.map(typeSkillsFinded -> new TypeSkillsVO.Builder().setTitleSkill(typeSkillsFinded.getTitleSkill())
