@@ -1,9 +1,7 @@
 FROM openjdk:11.0.5-jre-slim
 
-COPY ./target/matrix-0.0.1-SNAPSHOT.jar /usr/app/
+EXPOSE 8080
 
-WORKDIR /usr/app
+ADD /target/matrix-0.0.2-SNAPSHOT.jar matrix-0.0.2-SNAPSHOT.jar
 
-RUN sh -c 'touch matrix-0.0.1-SNAPSHOT.jar'
-
-ENTRYPOINT ["java","-jar","matrix-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-jar","matrix-0.0.2-SNAPSHOT.jar"]
