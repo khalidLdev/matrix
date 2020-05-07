@@ -1,7 +1,7 @@
 package com.humanup.matrix.controllers;
 
 import com.humanup.matrix.bs.PersonBS;
-import com.humanup.matrix.exceptions.ProfileException;
+import com.humanup.matrix.aop.dto.PersonException;
 import com.humanup.matrix.vo.PersonVO;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
@@ -24,7 +24,7 @@ public class PersonController {
       method = RequestMethod.POST,
       consumes = {"application/json"})
   @ResponseBody
-  public ResponseEntity createPerson(@RequestBody PersonVO person) throws ProfileException {
+  public ResponseEntity createPerson(@RequestBody PersonVO person) throws PersonException {
     Optional<Object> findPerson =
         Optional.ofNullable(personBS.findPersonByMailAdresses(person.getMailAdresses()));
 
@@ -47,9 +47,8 @@ public class PersonController {
   public ResponseEntity addPersonSkills(
       @RequestParam(value = "email", defaultValue = "robot@sqli.com") String email,
       @RequestBody List<Integer> skills)
-      throws ProfileException {
+      throws PersonException {
     Optional<Object> findPerson = Optional.ofNullable(personBS.addSkillsPerson(skills, email));
-
     if (findPerson.isEmpty()) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Forbidden Skills Information");
     }

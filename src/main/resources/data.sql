@@ -1,5 +1,3 @@
-CREATE database matrixdb;
-Use matrixdb;
 DROP TABLE IF EXISTS person;
 DROP TABLE IF EXISTS profile_person;
 DROP TABLE IF EXISTS skill;

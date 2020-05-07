@@ -12,16 +12,21 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
+
 
 @Component
 @RefreshScope
 public class RabbitMQPersonListner {
   private static final Logger LOGGER = LoggerFactory.getLogger(RabbitMQPersonListner.class);
 
-  @Autowired private PersonDAO personDAO;
-  @Autowired private ProfileDAO profileDAO;
+  @Autowired
+  private PersonDAO personDAO;
+  @Autowired
+  private ProfileDAO profileDAO;
 
-  @RabbitListener(queues = {"${person.queue.name}"})
+  @RabbitListener(queues = { "${person.queue.name}" })
   public void receive(PersonVO personVO) {
     try {
       LOGGER.info("Receive  message... {} ", personVO.toString());
@@ -32,8 +37,7 @@ public class RabbitMQPersonListner {
         LOGGER.info("Received message as generic: {}", personVO.toString());
       }
 
-      Person personToSave =
-          Person.builder()
+      Person personToSave = Person.builder()
               .firstName(personVO.getFirstName())
               .lastName(personVO.getLastName())
               .mailAdresses(personVO.getMailAdresses())
@@ -41,8 +45,20 @@ public class RabbitMQPersonListner {
               .profile(profile)
               .build();
       personDAO.save(personToSave);
-    } catch (Exception ex) {
-      LOGGER.info("Error  message... {} ", ex.getMessage(), ex);
+    }catch(Exception ex){
+      LOGGER.info("Error  message... {} ", ex.getMessage(),ex);
+
+    }
+  }
+  @RabbitListener(queues = { "${person.queue.name}" })
+  public void receivePersonSkill(Person person) {
+    try {
+      LOGGER.info("Receive  message... {} ", person.toString());
+      personDAO.save(person);
+    }catch(Exception ex){
+      LOGGER.info("Error  message... {} ", ex.getMessage(),ex);
+
     }
   }
 }
+
