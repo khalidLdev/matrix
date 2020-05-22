@@ -1,5 +1,6 @@
 package com.humanup.matrix.bs.impl;
 
+import com.humanup.matrix.aop.dto.PersonException;
 import com.humanup.matrix.aop.dto.SkillException;
 import com.humanup.matrix.bs.PersonBS;
 import com.humanup.matrix.bs.impl.sender.RabbitMQPersonSender;
@@ -9,7 +10,6 @@ import com.humanup.matrix.dao.SkillDAO;
 import com.humanup.matrix.dao.entities.Person;
 import com.humanup.matrix.dao.entities.Skill;
 import com.humanup.matrix.dao.entities.TypeSkills;
-import com.humanup.matrix.aop.dto.PersonException;
 import com.humanup.matrix.vo.PersonVO;
 import com.humanup.matrix.vo.SkillVO;
 import java.util.List;
@@ -37,16 +37,14 @@ public class PersonBSImpl implements PersonBS {
   @Transactional(
       transactionManager = "transactionManagerWrite",
       rollbackFor = PersonException.class)
-  public boolean createPerson(PersonVO personVO) throws PersonException{
+  public boolean createPerson(PersonVO personVO) throws PersonException {
     if (null == personVO) throw new PersonException();
     rabbitMQPersonSender.send(personVO);
     return true;
   }
 
   @Override
-  @Transactional(
-      transactionManager = "transactionManagerWrite",
-      rollbackFor = SkillException.class)
+  @Transactional(transactionManager = "transactionManagerWrite", rollbackFor = SkillException.class)
   public boolean addSkillsPerson(List<Integer> skills, String email) throws SkillException {
     Person personToUpdate = personDAO.findByMailAdresses(email);
     if (null == personToUpdate || null == email || StringUtils.isEmpty(email)) {

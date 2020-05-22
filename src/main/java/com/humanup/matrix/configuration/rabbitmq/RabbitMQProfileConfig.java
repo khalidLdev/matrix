@@ -10,33 +10,32 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 @Configuration
 public class RabbitMQProfileConfig {
 
   @Value("${profile.queue.name}")
-  String queueName;
+  String queueProfile;
 
   @Value("${profile.exchange.name}")
-  String exchange;
+  String exchangeProfile;
 
   @Value("${profile.routing.key}")
-  String routingkey;
+  String routingkeyProfile;
 
   @Bean
   Queue queue() {
-    return new Queue(queueName, false);
+    return new Queue(queueProfile, false);
   }
 
   @Bean
   DirectExchange exchange() {
-    return new DirectExchange(exchange);
+    return new DirectExchange(exchangeProfile);
   }
 
   @Bean
   Binding binding(Queue queue, DirectExchange exchange) {
-    return BindingBuilder.bind(queue).to(exchange).with(routingkey);
+    return BindingBuilder.bind(queue).to(exchange).with(routingkeyProfile);
   }
 
   @Bean

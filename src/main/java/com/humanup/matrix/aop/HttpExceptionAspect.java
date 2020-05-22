@@ -12,19 +12,17 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-public class HttpExceptionAspect
-{
-    private static final Logger LOGGER = LogManager.getLogger(HttpExceptionAspect.class);
+public class HttpExceptionAspect {
+  private static final Logger LOGGER = LogManager.getLogger(HttpExceptionAspect.class);
 
-    @Around("execution(* com.humanup.matrix.controllers..*(..)))")
-    public Object profileAllMethods(ProceedingJoinPoint proceedingJoinPoint) throws Throwable
-    {
-        try {
-            Object result = proceedingJoinPoint.proceed();
-            return result;
-        }catch(HttpException ex){
-            LOGGER.error("****HttpException " + ex.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-        }
+  @Around("execution(* com.humanup.matrix.controllers..*(..)))")
+  public Object profileAllMethods(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+    try {
+      Object result = proceedingJoinPoint.proceed();
+      return result;
+    } catch (HttpException ex) {
+      LOGGER.error("****HttpException " + ex.getMessage());
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
+  }
 }

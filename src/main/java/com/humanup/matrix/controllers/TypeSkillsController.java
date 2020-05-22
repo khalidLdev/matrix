@@ -1,7 +1,7 @@
 package com.humanup.matrix.controllers;
 
-import com.humanup.matrix.bs.TypeSkillsBS;
 import com.humanup.matrix.aop.dto.TypeSkillException;
+import com.humanup.matrix.bs.TypeSkillsBS;
 import com.humanup.matrix.vo.TypeSkillsVO;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
@@ -24,7 +24,8 @@ public class TypeSkillsController {
       method = RequestMethod.POST,
       consumes = {"application/json"})
   @ResponseBody
-  public ResponseEntity createTypeSkills(@RequestBody TypeSkillsVO typeSkills) throws TypeSkillException {
+  public ResponseEntity createTypeSkills(@RequestBody TypeSkillsVO typeSkills)
+      throws TypeSkillException {
     Optional<Object> findTypeSkills =
         Optional.ofNullable(typeSkillsBS.findByTypeSkillsTitle(typeSkills.getTitleSkill()));
 
@@ -32,7 +33,7 @@ public class TypeSkillsController {
       return ResponseEntity.status(HttpStatus.FOUND).body("This type is Founded");
     }
     typeSkillsBS.createTypeSkills(typeSkills);
-    return ResponseEntity.status(HttpStatus.CREATED).body(typeSkillsBS);
+    return ResponseEntity.status(HttpStatus.CREATED).body(typeSkills);
   }
 
   @Operation(

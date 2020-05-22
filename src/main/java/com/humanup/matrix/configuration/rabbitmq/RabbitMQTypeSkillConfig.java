@@ -10,33 +10,32 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 @Configuration
 public class RabbitMQTypeSkillConfig {
 
   @Value("${typeskill.queue.name}")
-  String queueName;
+  String queueTypeSkill;
 
   @Value("${typeskill.exchange.name}")
-  String exchange;
+  String exchangeTypeSkill;
 
   @Value("${typeskill.routing.key}")
-  String routingkey;
+  String routingkeyTypeSkill;
 
   @Bean
   Queue queue() {
-    return new Queue(queueName, false);
+    return new Queue(queueTypeSkill, false);
   }
 
   @Bean
   DirectExchange exchange() {
-    return new DirectExchange(exchange);
+    return new DirectExchange(exchangeTypeSkill);
   }
 
   @Bean
   Binding binding(Queue queue, DirectExchange exchange) {
-    return BindingBuilder.bind(queue).to(exchange).with(routingkey);
+    return BindingBuilder.bind(queue).to(exchange).with(routingkeyTypeSkill);
   }
 
   @Bean

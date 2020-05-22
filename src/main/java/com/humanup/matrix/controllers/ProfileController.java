@@ -1,7 +1,7 @@
 package com.humanup.matrix.controllers;
 
-import com.humanup.matrix.bs.ProfileBS;
 import com.humanup.matrix.aop.dto.ProfileException;
+import com.humanup.matrix.bs.ProfileBS;
 import com.humanup.matrix.vo.ProfileVO;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;

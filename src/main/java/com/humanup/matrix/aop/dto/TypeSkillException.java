@@ -1,16 +1,16 @@
 package com.humanup.matrix.aop.dto;
 
 public class TypeSkillException extends HttpException {
-    public TypeSkillException(String message) {
-        super(message);
-    }
+  public TypeSkillException(String message) {
+    super(message);
+  }
 
-    public TypeSkillException() {
-        super();
-    }
+  public TypeSkillException() {
+    super();
+  }
 
-    @Override
-    public String getMessage() {
-        return "Cannot Create TypeSkill";
-    }
+  @Override
+  public String getMessage() {
+    return "Cannot Create TypeSkill";
+  }
 }
